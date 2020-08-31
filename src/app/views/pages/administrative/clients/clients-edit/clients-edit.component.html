@@ -1,0 +1,162 @@
+<kt-portlet>
+  <kt-portlet-header [title]="getComponentTitle()" [class]="'card-head-lg'">
+    <ng-container ktPortletTools>
+      <a [routerLink]="[editing ? '../../' : '../']" class="btn btn-secondary mr-2" mat-raised-button matTooltip="Voltar">
+        <i class="la la-arrow-left"></i>
+        <span class="hidden-mobile">Voltar</span>
+      </a>
+
+      <a href="javascript:;" class="btn btn-primary mr-2" color="primary" [ngClass]="{
+            'spinner spinner-right spinner-md spinner-light': loading | async
+          }" (click)="onSumbit(false)" mat-raised-button matTooltip="Salvar">
+        <span class="hidden-mobile">Salvar</span>
+      </a>
+    </ng-container>
+  </kt-portlet-header>
+
+  <kt-portlet-body>
+    <div *ngIf="indicatorSubject | async">
+     <form [formGroup]="formGroup" class="form form-group-seperator-dashed" *ngIf="indicatorSubject | async">
+
+      <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+        Preencha corretamente os campos abaixo desscritos.
+      </kt-alert>
+
+      <div class="form-section form-section-first">
+        <mat-card >
+          <mat-card-header>
+            <h4>Dados Pessoais</h4>
+          </mat-card-header>
+          <div class="row mb-4">
+            <div class="col-sm-12 kt-margin-bottom-20-mobile">
+              <mat-form-field class="mat-form-field-fluid"  appearance="fill">
+                <mat-label>Nome</mat-label>
+                <input matInput placeholder="Nome" formControlName="name"/>
+                <mat-error>Nome é <strong>obrigatório</strong> </mat-error>
+                <mat-hint align="start">Digite seu   <strong>Nome</strong> </mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-sm-6 kt-margin-bottom-20-mobile">
+
+              <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                <mat-label>Tipo</mat-label>
+                <mat-select formControlName="type" [disabled]="editing" (selectionChange)="getSelectedOptionText($event.value)" placeholder="Tipo">
+                  <mat-option *ngFor="let col of orders" [value]="col.id">
+                    {{ col.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error>
+                  Categoria <strong>é um campo obrigatório</strong>
+                </mat-error>
+                <mat-hint align="start">Digite uma <strong>categoria</strong>
+                </mat-hint>
+              </mat-form-field>
+            </div>
+
+            <div class="col-sm-6 kt-margin-bottom-20-mobile" *ngIf="inputCNPJ">
+              <mat-form-field class="mat-form-field-fluid"  appearance="fill">
+                <mat-label>CNPJ</mat-label>
+                <input matInput type="text" placeholder="CNPJ" [specialCharacters]="[ '.' , '/', '-']" mask="00.000.000/0000-00" formControlName="cnpj"/>
+                <mat-error>Digite um <strong>CNPJ</strong> válido.</mat-error>
+                <mat-hint align="start">Digite o <strong>CNPJ</strong> </mat-hint>
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-6 kt-margin-bottom-20-mobile" *ngIf="inputCPF">
+              <mat-form-field class="mat-form-field-fluid"  appearance="fill">
+                <mat-label>CPF</mat-label>
+                <input matInput type="text" placeholder="cpf" [specialCharacters]="[ '.' , '-']" mask="000.000.000-00" formControlName="cpf"/>
+                <mat-error> Digite um <strong>CPF</strong> válido.</mat-error>
+                <mat-hint align="start">Digite o <strong>CPF</strong> </mat-hint>
+              </mat-form-field>
+            </div>
+
+          </div>
+
+          <div class="row mb-4" *ngIf="inputCNPJ">
+            <div class="col-sm-12 kt-margin-bottom-20-mobile">
+              <mat-form-field class="mat-form-field-fluid"  appearance="fill">
+                <mat-label>Nome Fantasia</mat-label>
+                <input matInput placeholder="Nome fantasia" formControlName="fantasy"/>
+                <mat-error>Nome fantasia é <strong>obrigatório</strong> </mat-error>
+                <mat-hint align="start">Digite seu   <strong>Nome Fantasia da emrpesa</strong> </mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row mb-4" *ngIf="inputCNPJ">
+            <div class="col-sm-6 kt-margin-bottom-20-mobile">
+              <mat-form-field class="mat-form-field-fluid"  appearance="fill">
+                <mat-label>Inscrição Estadual</mat-label>
+                <input type="number" number matInput placeholder="Inscrição Estadual" formControlName="ie"/>
+                <mat-hint align="start">Digite a <strong>Inscrição estadual</strong> </mat-hint>
+              </mat-form-field>
+            </div>
+
+            <div class="col-sm-6 kt-margin-bottom-20-mobile">
+              <mat-form-field class="mat-form-field-fluid"  appearance="fill">
+                <mat-label>Inscrição Municipal</mat-label>
+                <input type="number" number matInput placeholder="IM" formControlName="im"/>
+                <mat-hint align="start">Digite a <strong>Inscrição estadual</strong> </mat-hint>
+              </mat-form-field>
+            </div>
+
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-sm-8 kt-margin-bottom-20-mobile">
+              <mat-form-field class="mat-form-field-fluid"  appearance="fill">
+                <mat-label>E-mail</mat-label>
+                <input matInput placeholder="E-mail" type="email" formControlName="email" email/>
+                <mat-error>Digite um <strong>e-mail</strong> válido.</mat-error>
+                <mat-hint align="start">Digite seu   <strong>e-mail</strong> </mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 kt-margin-bottom-20-mobile">
+              <mat-form-field class="mat-form-field-fluid"  appearance="fill">
+                <mat-label>Melhor dia de faturamento</mat-label>
+                <input matInput type="number" placeholder="Dia para faturamento" [min]="1" [max]="31" formControlName="billing"/>
+                <mat-hint align="start">Escolha um  <strong>Dia de faturamento</strong> </mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-sm-8 kt-margin-bottom-20-mobile">
+              <mat-form-field class="mat-form-field-fluid"  appearance="fill">
+                <mat-label>Descrição</mat-label>
+                <textarea formControlName="description" matInput placeholder="Descrição"></textarea>
+                <mat-error>Observação é <strong>obrigatório</strong> </mat-error>
+                <mat-hint align="start">Digite uma  <strong>observação</strong> </mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 kt-margin-bottom-20-mobile">
+              <mat-form-field class="mat-form-field-fluid" appearance="fill" >
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="active"  placeholder="Status" >
+                  <mat-option *ngFor="let col of active" [value]="col.id">
+                    {{ col.title }}
+                  </mat-option>
+                </mat-select>
+                <mat-error>
+                  Status <strong>é um campo obrigatório</strong>
+                </mat-error>
+                <mat-hint align="start">Selecione um <strong>status</strong>
+                </mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+
+      <kt-addresses [addressSubject]="addressSubject"></kt-addresses>
+      <kt-phones [phonesSubject]="phonesSubject"></kt-phones>
+      <kt-contacts [contactsSubject]="contactsSubject"></kt-contacts>
+
+    </form>
+    </div>
+  </kt-portlet-body>
+</kt-portlet>

@@ -1,0 +1,42 @@
+<kt-portlet>
+    <kt-portlet-header [title]="'Visualização'" [class]="'card-head-lg'">
+        <ng-container ktPortletTools>
+            <a (click) ="closeDialog()" class="btn btn-secondary mr-2" mat-raised-button matTooltip="Voltar">
+                <i class="la la-arrow-left"></i>
+                <span class="hidden-mobile">Voltar</span>
+            </a>
+        </ng-container>
+    </kt-portlet-header>
+
+    <kt-portlet-body>
+
+
+            <div class="row mb-4">
+                <div class="col-sm-4">Cliente:</div>
+                <div class="col-sm-8">{{dialogContent['client']['name']}}</div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-4">Categoria:</div>
+                <div class="col-sm-8">{{dialogContent['category']['name']}}</div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-4">Situação:</div>
+                <div class="col-sm-8">{{dialogContent['situation_description']}}</div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-4">Validade:</div>
+                <div class="col-sm-8">{{dialogContent['validity_description']}}</div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-4">Valor:</div>
+                <div class="col-sm-8">{{dialogContent['value_parsed']  }}</div>
+            </div>
+
+
+
+    </kt-portlet-body>
+</kt-portlet>

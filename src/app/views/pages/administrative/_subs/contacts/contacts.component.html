@@ -1,0 +1,47 @@
+<mat-card [formGroup]="form">
+    <mat-card-header>
+        <h4>Contatos
+            <button mat-icon-button (click)="addContact()">
+                <mat-icon aria-label="Example icon-button with a heart icon">queue music</mat-icon>
+            </button>&nbsp;
+        </h4>
+    </mat-card-header>
+
+    <div class="form-section form-section-first" formArrayName="contact">
+
+        <div class="row" *ngFor="let mob of contactsForms.controls; let i=index" [formGroup]="contactsForms.controls[i]">
+
+            <div class="col-sm-1">
+                <a mat-icon-button (click)="deleteContact(i)">
+                    <mat-icon>clear</mat-icon>
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>Contato {{ i + 1 }}</mat-label>
+                    <input matInput placeholder="Nome" formControlName="name"/>
+                    <mat-hint align="start">Digite o  <strong>nome</strong> </mat-hint>
+                </mat-form-field>
+            </div>
+
+            <div class="col-sm-3">
+                <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>E-mail </mat-label>
+                    <input matInput placeholder="email" formControlName="email" />
+                    <mat-hint align="start">Digite um  <strong>e-mail</strong> </mat-hint>
+                </mat-form-field>
+            </div>
+
+            <div class="col-sm-3">
+                <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>Fone</mat-label>
+                    <input matInput placeholder="Fone" formControlName="phone" [specialCharacters]="[ '(', ')', '-' ]" mask="(00)00000-0000"/>
+                    <mat-hint align="start">Digite um  <strong>telefone</strong> </mat-hint>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+    </div>
+</mat-card>
+
+

@@ -1,0 +1,38 @@
+    <mat-card [formGroup]="form">
+        <mat-card-header>
+            <h4>Telefones
+                <button mat-icon-button (click)="addPhone()">
+                    <mat-icon aria-label="Example icon-button with a heart icon">queue music</mat-icon>
+                </button>&nbsp;
+            </h4>
+        </mat-card-header>
+
+        <div class="form-section form-section-first" formArrayName="phone">
+
+            <div class="row" *ngFor="let mob of phoneForms.controls; let i=index" [formGroup]="phoneForms.controls[i]">
+
+                <div class="col-sm-1">
+                    <a mat-icon-button (click)="deletePhone(i)">
+                        <mat-icon>clear</mat-icon>
+                    </a>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                        <mat-label>Fone {{ i + 1 }}</mat-label>
+
+                        <input *ngIf="phoneType" matInput placeholder="Fone" formControlName="phone" [specialCharacters]="[ '(', ')', '-' ]" mask="(00)0000-0000"/>
+
+                        <input *ngIf="!phoneType" matInput placeholder="Fone" formControlName="phone" [specialCharacters]="[ '(', ')', '-' ]" mask="(00)00000-0000"/>
+
+                        <mat-hint align="start">Digite um  <strong>telefone</strong> </mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-1">
+                    <mat-checkbox (change)="selectPhone($event.checked)"> Fone Fixo</mat-checkbox>
+                </div>
+                <div class="col-sm-5"> </div>
+            </div>
+        </div>
+    </mat-card>
+
+

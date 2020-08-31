@@ -1,0 +1,94 @@
+<form [formGroup]="form" class="form form-group-seperator-dashed">
+
+
+    <div class="row">
+        <div class="col-xl-7"></div>
+        <div class="col-xl-1">CRIAR</div>
+        <div class="col-xl-1">EDITAR</div>
+        <div class="col-xl-1">VER</div>
+        <div class="col-xl-1">DELETAR</div>
+        <div class="col-xl-1">ADIC.</div>
+    </div>
+    <div class="separator separator-dashed my-6"></div>
+    <div class="row" formGroupName="clients">
+        <div class="col-xl-7">CLIENTES </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="create" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="edit" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="view" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="delete" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="add" [color]="'primary'"></mat-checkbox> </div>
+    </div>
+    <div class="separator separator-dashed my-6"></div>
+    <div class="row" formGroupName="providers">
+        <div class="col-xl-7">FORNECEDORES </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="create" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="edit" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="view" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="delete" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="add" [color]="'primary'"></mat-checkbox> </div>
+    </div>
+    <div class="separator separator-dashed my-6"></div>
+    <div class="row" formGroupName="services">
+        <div class="col-xl-7">SERVIÇOS </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="create" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="edit" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="view" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="delete" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="add" [color]="'primary'"></mat-checkbox> </div>
+    </div>
+    <div class="separator separator-dashed my-6"></div>
+    <div class="row" formGroupName="employees">
+        <div class="col-xl-7">FUNCIONÁRIOS </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="create" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="edit" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="view" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="delete" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="add" [color]="'primary'"></mat-checkbox> </div>
+    </div>
+    <div class="separator separator-dashed my-6"></div>
+    <div class="row" formGroupName="proposals">
+        <div class="col-xl-7">PROPOSTAS </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="create" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="edit" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="view" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="delete" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="add" [color]="'primary'"></mat-checkbox> </div>
+    </div>
+    <div class="separator separator-dashed my-6"></div>
+    <div class="row" formGroupName="bills_to_receive">
+        <div class="col-xl-7">CONTAS À RECEBER </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="create" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="edit" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="view" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="delete" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="add" [color]="'primary'"></mat-checkbox> </div>
+    </div>
+    <div class="separator separator-dashed my-6"></div>
+    <div class="row" formGroupName="bills_to_pay">
+        <div class="col-xl-7">CONTAS À PAGAR </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="create" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="edit" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="view" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="delete" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="add" [color]="'primary'"></mat-checkbox> </div>
+    </div>
+    <div class="separator separator-dashed my-6"></div>
+    <div class="row" formGroupName="configs">
+        <div class="col-xl-7">CONFIGURAÇÕES </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="create" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="edit" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="view" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="delete" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="add" [color]="'primary'"></mat-checkbox> </div>
+    </div>
+    <div class="separator separator-dashed my-6"></div>
+    <div class="row" formGroupName="fiscal_notes">
+        <div class="col-xl-7">NOTAS FISCAIS </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="create" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="edit" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="view" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="delete" [color]="'primary'"></mat-checkbox> </div>
+        <div class="col-xl-1"> <mat-checkbox formControlName="add" [color]="'primary'"></mat-checkbox> </div>
+    </div>
+
+</form>

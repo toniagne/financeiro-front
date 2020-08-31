@@ -1,0 +1,143 @@
+<kt-portlet>
+    <kt-portlet-header [title]="'Visualizar detalhes'" [class]="'card-head-lg'">
+        <ng-container ktPortletTools>
+            <a (click) ="closeDialog()" class="btn btn-secondary mr-2" mat-raised-button matTooltip="Fechar">
+                <i class="la la-arrow-left"></i>
+                <span class="hidden-mobile">Fechar</span>
+            </a>
+        </ng-container>
+    </kt-portlet-header>
+
+    <kt-portlet-body>
+        <mat-spinner *ngIf="loadingPermissions | async" [diameter]="60"></mat-spinner>
+        <mat-tab-group>
+            <mat-tab label="Dados Pessoais">
+                <mat-card>
+                    <mat-card-title>DADOS PESSOAIS</mat-card-title>
+                    <div class="row mb-4">
+                        <div class="col-sm-4">Nome:</div>
+                        <div class="col-sm-8">{{dialogContent['name']}}</div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-sm-4">email:</div>
+                        <div class="col-sm-8">{{dialogContent['email']}}</div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-sm-4">CPF:</div>
+                        <div class="col-sm-8">{{dialogContent['cpf']}}</div>
+                    </div>
+                </mat-card>
+
+                <mat-card>
+                    <mat-card-title>TELEFONES</mat-card-title>
+                    <div class="row mb-4" *ngFor="let phone of dialogContent['phones']">
+                        <div class="col-sm-4">Telefone:</div>
+                        <div class="col-sm-8">
+                            {{ phone.phone }}
+                        </div>
+                    </div>
+                </mat-card>
+            </mat-tab>
+            <mat-tab label="Permissões">
+
+
+                    <div class="row">
+                        <div class="col-xl-7"></div>
+                        <div class="col-xl-1">CRIAR</div>
+                        <div class="col-xl-1">EDITAR</div>
+                        <div class="col-xl-1">VER</div>
+                        <div class="col-xl-1">DELETAR</div>
+                        <div class="col-xl-1">ADIC.</div>
+                    </div>
+                    <div class="separator separator-dashed my-6"></div>
+                    <div class="row">
+                        <div class="col-xl-7">CLIENTES </div>
+                        <div class="col-xl-1"> <mat-icon>{{ permissions.clients['create'] ? 'check_circle' : 'remove_circle'}}</mat-icon> </div>
+                        <div class="col-xl-1"> <mat-icon>{{ permissions.clients['edit'] ? 'check_circle' : 'remove_circle'}}</mat-icon> </div>
+                        <div class="col-xl-1"> <mat-icon>{{ permissions.clients['view'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                        <div class="col-xl-1"> <mat-icon>{{ permissions.clients['delete'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                        <div class="col-xl-1"> <mat-icon>{{ permissions.clients['add'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    </div>
+
+                <div class="row">
+                    <div class="col-xl-7">FORNECEDORES </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.providers['create'] ? 'check_circle' : 'remove_circle'}}</mat-icon> </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.providers['edit'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.providers['view'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.providers['delete'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.providers['add'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-7">SERVIÇOS </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.services['create'] ? 'check_circle' : 'remove_circle'}}</mat-icon> </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.services['edit'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.services['view'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.services['delete'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.services['add ']? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-7">FUNCIONÁRIOS </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.employees['create'] ? 'check_circle' : 'remove_circle'}}</mat-icon> </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.employees['edit'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.employees['view'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.employees['delete'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.employees['add'] ? 'check_circle' : 'remove_circle'}}</mat-icon> </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-7">PROPOSTAS </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.proposals['create'] ? 'check_circle' : 'remove_circle'}}</mat-icon> </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.proposals['edit'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.proposals['view'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.proposals['delete'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"> <mat-icon>{{ permissions.proposals['add'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-7">CONTAS À RECEBER </div>
+                    <div class="col-xl-1"> <mat-icon>{{ permissions.bills_to_receive['create'] ? 'check_circle' : 'remove_circle'}}</mat-icon> </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.bills_to_receive['edit'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"> <mat-icon>{{ permissions.bills_to_receive['view'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.bills_to_receive['delete'] ? 'check_circle' : 'remove_circle'}}</mat-icon> </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.bills_to_receive['add'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-7">CONTAS À PAGAR </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.bills_to_pay['create'] ? 'check_ scircle' : 'remove_circle'}}</mat-icon> </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.bills_to_pay['edit'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.bills_to_pay['view'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.bills_to_pay['delete'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.bills_to_pay['add'] ? 'check_circle' : 'remove_circle'}}</mat-icon> </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-7">CONFIGURAÇÕES </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.configs['create'] ? 'check_circle' : 'remove_circle'}}</mat-icon> </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.configs['edit'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.configs['view'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.configs['delete'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"> <mat-icon>{{ permissions.configs['add'] ? 'check_circle' : 'remove_circle'}}</mat-icon> </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-7">NOTAS FISCAIS  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.fiscal_notes['create'] ? 'check_circle' : 'remove_circle'}}</mat-icon> </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.fiscal_notes['edit'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.fiscal_notes['view'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.fiscal_notes['delete'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                    <div class="col-xl-1"><mat-icon> {{ permissions.fiscal_notes['add'] ? 'check_circle' : 'remove_circle'}}</mat-icon>  </div>
+                </div>
+
+            </mat-tab>
+        </mat-tab-group>
+
+
+
+
+    </kt-portlet-body>
+</kt-portlet>

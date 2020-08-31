@@ -1,0 +1,150 @@
+<kt-portlet>
+    <kt-portlet-header [title]="'Visualizar detalhes'" [class]="'card-head-lg'">
+        <ng-container ktPortletTools>
+            <a (click) ="closeDialog()" class="btn btn-secondary mr-2" mat-raised-button matTooltip="Fechar">
+                <i class="la la-arrow-left"></i>
+                <span class="hidden-mobile">Fechar</span>
+            </a>
+        </ng-container>
+    </kt-portlet-header>
+
+    <kt-portlet-body>
+
+        <mat-tab-group>
+            <mat-tab label="DADOS PESSOAIS">
+
+                    <h5 class="card-header">DADOS PESSOAIS</h5>
+                    <div class="row mb-4">
+                        <div class="col-sm-4">Nome:</div>
+                        <div class="col-sm-8">{{dialogContent['name']}}</div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-sm-4">Cargo:</div>
+                        <div class="col-sm-8">{{dialogContent['occupation'] }}</div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-sm-4">Tipo de contratação:</div>
+                        <div class="col-sm-8">{{dialogContent['pay_type'] | documents }}</div>
+                    </div>
+
+                    <div class="row mb-4" *ngIf="dialogContent['cnpj']">
+                        <div class="col-sm-4">CPF/CNPJ:</div>
+                        <div class="col-sm-8">{{dialogContent['document']}}</div>
+                    </div>
+
+
+                    <div class="row mb-4">
+                        <div class="col-sm-4">E-mail:</div>
+                        <div class="col-sm-8">{{dialogContent['email']}}</div>
+                    </div>
+
+            </mat-tab>
+            <mat-tab label="CONTATOS">
+
+                <h5 class="card-header">ENDEREÇO</h5>
+                    <div class="row mb-4" *ngIf="dialogContent['address'][0]['address']">
+                        <div class="col-sm-4">Endereço:</div>
+                        <div class="col-sm-8">
+                            {{ dialogContent['address'][0]['address'] }}, {{ dialogContent['address'][0]['number'] }}
+                        </div>
+                    </div>
+                    <br><br>
+
+                <h5 class="card-header">TELEFONES</h5>
+                    <div class="row mb-4" *ngFor="let phone of dialogContent['phones']">
+                        <div class="col-sm-4">Telefone:</div>
+                        <div class="col-sm-8">
+                            {{ phone.phone | telefone }}
+                        </div>
+                    </div>
+
+            </mat-tab>
+            <mat-tab label="REMUNERAÇÃO & GRADUAÇÃO">
+                <h5 class="card-header">REMUNERAÇÃO & GRADUAÇÃO</h5>
+
+                    <div class="row mb-4">
+                        <div class="col-sm-4">Graduação:</div>
+                        <div class="col-sm-8">{{dialogContent['graduation_details']}}</div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-sm-4">TIPO DE REMUNERAÇÃO:</div>
+                        <div class="col-sm-8">{{dialogContent['service_type'].name}}</div>
+                    </div>
+
+                    <div class="row mb-4" >
+                        <div class="col-sm-4">REMUNERAÇÃO:</div>
+                        <div class="col-sm-8">{{dialogContent['salary'] | currency}}</div>
+                    </div>
+
+                    <div class="row mb-4" >
+                        <div class="col-sm-4">DIA DO PAGAMENTO:</div>
+                        <div class="col-sm-8">{{dialogContent['pay_day']}}</div>
+                    </div>
+
+                    <div class="row mb-4" >
+                        <div class="col-sm-4">FLUXO DE TRABALHO:</div>
+                        <div class="col-sm-8">{{dialogContent['workflow'] | documents}}</div>
+                    </div>
+
+                    <div class="row mb-4" *ngIf="dialogContent['observation']">
+                        <div class="col-sm-4">OBSERVAÇÃO:</div>
+                        <div class="col-sm-8">{{dialogContent['observation']}}</div>
+                    </div>
+
+                <h5 class="card-header">CONTAS BANCÁRIAS</h5>
+                    <div class="row mb-4" *ngFor="let bank of dialogContent['banks']">
+                        <div class="col-sm-4">Conta:</div>
+                        <div class="col-sm-8">
+                            Banco: {{ bank.bank_name }} /  AG: {{ bank.agency }} / CC: {{ bank.account }}
+                        </div>
+                    </div>
+            </mat-tab>
+            <mat-tab label="DOCUMENTOS">
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <img [src]="'storage/' + dialogContent['img_profile']" width="100%">
+                    </div>
+                    <div class="col-sm-8">
+                        <h4>Perfil</h4>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <img [src]="'storage/' + dialogContent['img_address']"  width="100%">
+                    </div>
+                    <div class="col-sm-8">
+                        <h4>Comprovante de endereço</h4>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <img [src]="'storage/' + dialogContent['img_document']"  width="100%">
+                    </div>
+                    <div class="col-sm-8">
+                        <h4>Documento</h4>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <img [src]="'storage/' + dialogContent['img_graduation']"  width="100%">
+                    </div>
+                    <div class="col-sm-8">
+                        <h4>Graduação</h4>
+                    </div>
+                </div>
+
+
+
+            </mat-tab>
+        </mat-tab-group>
+
+
+    </kt-portlet-body>
+</kt-portlet>

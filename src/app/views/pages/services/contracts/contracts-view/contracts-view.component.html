@@ -1,0 +1,43 @@
+<kt-portlet>
+    <kt-portlet-header [title]="'Visualização'" [class]="'card-head-lg'">
+        <ng-container ktPortletTools>
+            <a (click) ="closeDialog()" class="btn btn-secondary mr-2" mat-raised-button matTooltip="Voltar">
+                <i class="la la-arrow-left"></i>
+                <span class="hidden-mobile">Fechar janela</span>
+            </a>
+        </ng-container>
+    </kt-portlet-header>
+
+    <kt-portlet-body>
+
+        <mat-card>
+            <div class="row mb-4">
+                <div class="col-sm-4">Nome:</div>
+                <div class="col-sm-8"><b>{{dialogContent['name']}}</b></div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-4">Cliente :</div>
+                <div class="col-sm-8"> <b>( {{dialogContent['type_description']}} ) {{dialogContent['client']}} </b></div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-4">Data início:</div>
+                <div class="col-sm-8"><b> {{dialogContent['date_start_description']}} </b></div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-4">Data final:</div>
+                <div class="col-sm-8"><b> {{dialogContent['date_end_description']}} </b></div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-4">Observações:</div>
+                <div class="col-sm-8"><b> {{dialogContent['observation']}} </b></div>
+            </div>
+
+        </mat-card>
+
+
+    </kt-portlet-body>
+</kt-portlet>

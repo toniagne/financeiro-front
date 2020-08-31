@@ -1,0 +1,337 @@
+<kt-portlet>
+  <kt-portlet-header [title]="getComponentTitle()" [class]="'card-head-lg'">
+    <ng-container ktPortletTools>
+
+      <a *ngIf="editing" [routerLink]="[editing ? '../../' : '../']" class="btn btn-secondary mr-2" mat-raised-button matTooltip="Voltar">
+        <i class="la la-arrow-left"></i>
+        <span class="hidden-mobile">Voltar</span>
+      </a>
+
+      <a *ngIf="!editing" [routerLink]="['../']" class="btn btn-secondary mr-2" mat-raised-button matTooltip="Voltar">
+        <i class="la la-arrow-left"></i>
+        <span class="hidden-mobile">Voltar</span>
+      </a>
+
+      <a href="javascript:;" class="btn btn-primary mr-2" color="primary" [ngClass]="{
+            'spinner spinner-right spinner-md spinner-light': loading
+          }" (click)="onSumbit(false)" mat-raised-button matTooltip="Salvar">
+        <span class="hidden-mobile">Salvar</span>
+      </a>
+    </ng-container>
+  </kt-portlet-header>
+
+  <kt-portlet-body>
+    <div *ngIf="indicatorSubject | async">
+    <form [formGroup]="formEmployess" class="form form-group-seperator-dashed" >
+
+      <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+        Preencha corretamente os campos abaixo desscritos.
+      </kt-alert>
+
+      <div class="form-section form-section-first">
+        <mat-tab-group>
+
+          <mat-tab label="Dados Pessoais">
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Dados pessoais</mat-card-title>
+              </mat-card-header>
+
+              <div class="row mb-4">
+
+                <div class="col-sm-12 kt-margin-bottom-20-mobile mb-4">
+                  <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>Nome completo</mat-label>
+                    <input matInput placeholder="Nome do usuário" formControlName="name"/>
+                    <mat-error>Nome é <strong>obrigatório</strong> </mat-error>
+                    <mat-hint align="start">Digite seu   <strong>Nome</strong> </mat-hint>
+                  </mat-form-field>
+                </div>
+
+              </div>
+
+              <div class="row mb-4">
+
+                <div class="col-sm-4 kt-margin-bottom-20-mobile mb-4">
+                  <mat-form-field class="mat-form-field-fluid" appearance="fill" >
+                    <mat-label>Cargo</mat-label>
+                    <mat-select placeholder="Selecione" formControlName="occupattion_id">
+                      <mat-option *ngFor="let col of occupations" [value]="col.id">
+                        {{ col.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error>Cargo é <strong>obrigatório</strong> </mat-error>
+                    <mat-hint align="start">Digite seu   <strong>Nome</strong> </mat-hint>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-sm-4">
+                  <mat-form-field class="mat-form-field-fluid" appearance="fill" >
+                    <mat-label>Tipo de contratação</mat-label>
+                    <mat-select placeholder="Selecione" formControlName="pay_type" (selectionChange)="getTypeContract($event.value)">
+                      <mat-option *ngFor="let col of typeContract" [value]="col.id">
+                        {{ col.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error>Tipo de contratação é <strong>obrigatório</strong> </mat-error>
+                    <mat-hint align="start">Escolha o  <strong>tipo de contratação</strong> </mat-hint>
+                  </mat-form-field>
+
+                </div>
+
+                <div class="col-sm-4 kt-margin-bottom-20-mobile mb-4" *ngIf="person">
+                  <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>Documento CPF</mat-label>
+                    <input matInput type="text" placeholder="CPF" formControlName="cpf" [specialCharacters]="[ '.', '-' ]" mask="000.000.000-00"/>
+
+                    <mat-hint align="start">Digite um <strong>CPF</strong> válido </mat-hint>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-sm-4 kt-margin-bottom-20-mobile mb-4" *ngIf="company">
+                  <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>Documento CNPJ</mat-label>
+                    <input matInput type="text" placeholder="CNPJ" formControlName="cnpj" [specialCharacters]="[ '.', '/', '-' ]" mask="00.000.000/0000-00"/>
+
+                    <mat-hint align="start">Digite um <strong>CNPJ</strong> válido.</mat-hint>
+                  </mat-form-field>
+                </div>
+
+              </div>
+
+              <div class="row mb-4">
+
+                <div class="col-sm-10 kt-margin-bottom-20-mobile mb-4">
+                  <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>E-mail</mat-label>
+                    <input matInput type="email" email placeholder="E-mail" formControlName="email"/>
+                    <mat-error>Digite um <strong>e-mail</strong> válido.</mat-error>
+                    <mat-hint align="start">Digite um <strong>e-mail</strong> </mat-hint>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-sm-2 kt-margin-bottom-20-mobile">
+                  <mat-form-field class="mat-form-field-fluid" appearance="fill" >
+                    <mat-label>Status</mat-label>
+                    <mat-select placeholder="Status" formControlName="status">
+                      <mat-option *ngFor="let col of statusItens" [value]="col.id">
+                        {{ col.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error>
+                      Status <strong>é um campo obrigatório</strong>
+                    </mat-error>
+                    <mat-hint align="start">Selecione um <strong>status</strong>
+                    </mat-hint>
+                  </mat-form-field>
+                </div>
+
+              </div>
+            </mat-card>
+          </mat-tab>
+
+          <mat-tab label="Contatos">
+            <kt-addresses [addressSubject]="addressSubject"></kt-addresses>
+            <kt-phones [phonesSubject]="phonesSubject"></kt-phones>
+          </mat-tab>
+
+          <mat-tab label="Remuneração & Graduação">
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Graduação</mat-card-title>
+              </mat-card-header>
+
+              <div class="row mb-4">
+                <div class="col-sm-12 kt-margin-bottom-20-mobile mb-4">
+                  <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>Graduação</mat-label>
+                    <input matInput placeholder="Nome do curso" formControlName="graduation_details"/>
+                    <mat-hint align="start">Digite o nome do  <strong>curso</strong> </mat-hint>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <mat-card-header>
+                <mat-card-title>Remuneração</mat-card-title>
+              </mat-card-header>
+
+              <div class="row mb-4">
+                <div class="col-sm-3 kt-margin-bottom-20-mobile mb-4">
+                  <mat-form-field class="mat-form-field-fluid" appearance="fill" >
+                    <mat-label>Tipo de Remuneração</mat-label>
+                    <mat-select placeholder="Selecione" formControlName="contract_type">
+                      <mat-option *ngFor="let col of types" [value]="col.id">
+                        {{ col.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error>Tipo de remuneração é <strong>obrigatório</strong> </mat-error>
+                    <mat-hint align="start">Escolha o  <strong>tipo de remuneração</strong> </mat-hint>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-sm-3 kt-margin-bottom-20-mobile">
+                  <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>Remuneração</mat-label>
+                    <input matInput currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',' }" formControlName="salary"/>
+                    <mat-error>Valor é <strong>obrigatório</strong> </mat-error>
+                    <mat-hint align="start">Digite o <strong>Valor</strong> </mat-hint>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-sm-3 kt-margin-bottom-20-mobile">
+                  <mat-form-field class="mat-form-field-fluid"  appearance="fill">
+                    <mat-label>Dia do pagamento</mat-label>
+                    <input matInput type="number" min="1" max="31" formControlName="pay_day"/>
+                    <mat-error>Dia do pagamento é <strong>obrigatório</strong> </mat-error>
+                    <mat-hint align="start">Escolha um dia para o  <strong>pagamento</strong> </mat-hint>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-sm-3 kt-margin-bottom-20-mobile mb-4">
+                  <mat-form-field class="mat-form-field-fluid" appearance="fill" >
+                    <mat-label>Fluxo de trabalho</mat-label>
+                    <mat-select placeholder="Selecione" formControlName="workflow">
+                      <mat-option *ngFor="let col of workflows" [value]="col.id">
+                        {{ col.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error>Fluxo de trabalho é <strong>obrigatório</strong> </mat-error>
+                    <mat-hint align="start">Escolha o  <strong>fluxo de trabalhoo</strong> </mat-hint>
+                  </mat-form-field>
+                </div>
+
+              </div>
+
+              <div class="row mb-4">
+                <div class="col-sm-12 kt-margin-bottom-20-mobile">
+                  <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>Observação</mat-label>
+                    <textarea  matInput placeholder="Observação" formControlName="observation"></textarea>
+                    <mat-error>Observação é <strong>obrigatório</strong> </mat-error>
+                    <mat-hint align="start">Digite uma  <strong>observação</strong> </mat-hint>
+                  </mat-form-field>
+                </div>
+              </div>
+
+
+              <kt-banks  [banksSubject]="banksSubject"></kt-banks>
+
+            </mat-card>
+          </mat-tab>
+
+          <mat-tab label="Documentos">
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Documentação</mat-card-title>
+              </mat-card-header>
+
+              <div class="row mb-4">
+                <div class="col-sm-12 kt-margin-bottom-20-mobile ">
+                  <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-progress-bar mode="buffer" *ngIf="loadImgProfile"></mat-progress-bar>
+                    <mat-label>Foto do perfil (JPG)</mat-label>
+                    <ngx-mat-file-input  accept=".jpg" type="file" formControlName="attachment_profile" (change)="uploadFileProfile()">
+                    </ngx-mat-file-input>
+                    <mat-hint align="start">Tamanho (150 x 150). <strong>(JPG)</strong> </mat-hint>
+                  </mat-form-field>
+                  <input matInput disabled formControlName="img_profile">
+                </div>
+              </div>
+
+              <div class="row mb-4" *ngIf="person">
+
+                <div class="col-sm-12 kt-margin-bottom-20-mobile ">
+                  <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>Documento de identificação (JPG, PDF)</mat-label>
+                    <ngx-mat-file-input  accept=".jpg" type="file">
+                    </ngx-mat-file-input>
+                    <mat-hint align="start">CPF, RG. <strong>(JPG, PDF)</strong> </mat-hint>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-sm-12 kt-margin-bottom-20-mobile ">
+                  <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>Comprovante de endereço (JPG, PDF)</mat-label>
+                    <ngx-mat-file-input  accept=".jpg" type="file">
+                    </ngx-mat-file-input>
+                    <mat-hint align="start">LUZ, ÁGUA <strong>(JPG, PDF)</strong> </mat-hint>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-sm-12 kt-margin-bottom-20-mobile ">
+                  <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>Comprovante de formação (JPG, PDF)</mat-label>
+                    <ngx-mat-file-input accept=".jpg" type="file">
+                    </ngx-mat-file-input>
+                    <mat-hint align="start">Certificado de conclusão <strong>(JPG, PDF)</strong> </mat-hint>
+                  </mat-form-field>
+                </div>
+
+              </div>
+
+              <div class="row mb-4" *ngIf="company">
+
+
+                <div class="col-sm-12 kt-margin-bottom-20-mobile mb-4">
+                  <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-progress-bar mode="buffer" *ngIf="loadImgDocument"></mat-progress-bar>
+                    <mat-label>Comprovante de inscrição CNPJ (JPG, PDF)</mat-label>
+                    <ngx-mat-file-input  accept=".jpg" type="file" formControlName="attachment_document" (change)="uploadFileDocument()">
+                    </ngx-mat-file-input>
+                    <mat-hint align="start">Inscrição CNPJ <strong>(JPG, PDF)</strong> </mat-hint>
+                  </mat-form-field>
+                  <input matInput disabled formControlName="img_document">
+                </div>
+
+                <div class="col-sm-12 kt-margin-bottom-20-mobile mb-4">
+                  <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-progress-bar mode="buffer" *ngIf="loadImgAddress"></mat-progress-bar>
+                    <mat-label>Comprovante de endereço (JPG, PDF)</mat-label>
+                    <ngx-mat-file-input  accept=".jpg" type="file" formControlName="attachment_address" (change)="uploadFileAddress()">
+                    </ngx-mat-file-input>
+                    <mat-hint align="start">LUZ, ÁGUA <strong>(JPG, PDF)</strong> </mat-hint>
+                  </mat-form-field>
+                  <input matInput disabled formControlName="img_address">
+                </div>
+
+                <div class="col-sm-12 kt-margin-bottom-20-mobile mb-4">
+                  <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-progress-bar mode="buffer" *ngIf="loadImgGraduation"></mat-progress-bar>
+                    <mat-label>Comprovante de formação (JPG, PDF)</mat-label>
+                    <ngx-mat-file-input accept=".jpg" type="file" formControlName="attachment_graduation" (change)="uploadFileGraduation()">
+                    </ngx-mat-file-input>
+                    <mat-hint align="start">Certificado de conclusão <strong>(JPG, PDF)</strong> </mat-hint>
+                  </mat-form-field>
+                  <input matInput disabled formControlName="img_graduation">
+                </div>
+
+              </div>
+
+            </mat-card>
+          </mat-tab>
+
+          <mat-tab label="Contratos">
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Contratos</mat-card-title>
+              </mat-card-header>
+
+              <div class="row" *ngIf="!editing">
+                <div class="col-sm-12 text-center">
+                  <h4> Você deve concluir o cadastro para poder anexar os contratos.</h4>
+                </div>
+              </div>
+
+            </mat-card>
+          </mat-tab>
+        </mat-tab-group>
+
+
+
+
+      </div>
+
+    </form>
+    </div>
+  </kt-portlet-body>
+</kt-portlet>

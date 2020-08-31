@@ -1,0 +1,84 @@
+<div class="card card-custom" [ngClass]="cssClasses">
+    <!-- Header -->
+    <div class="card-header border-0 mt-4">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="card-label font-weight-bolder text-dark">Detalhes da conta cod: <b>{{ dialogContent['id'] }}</b></span>
+        </h3>
+        <div class="card-toolbar">
+            <button mat-button [mat-dialog-close]="true">Fechar</button>
+        </div>
+    </div>
+    <!-- Body -->
+    <div class="card-body pt-sm-4">
+
+        <div class="d-flex align-items-center mb-4">
+            <div class="d-flex flex-column font-weight-bold">
+                <span class="text-dark text-hover-primary mb-1 font-size-lg">{{ dialogContent['amount'] | currency}}</span>
+                <span class="text-muted">Valor</span>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center mb-4">
+            <div class="d-flex flex-column font-weight-bold">
+                <span class="text-dark text-hover-primary mb-1 font-size-lg">{{ dialogContent['status'] }}</span>
+                <span class="text-muted">Situação</span>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center mb-4">
+            <div class="d-flex flex-column font-weight-bold">
+                <span class="text-dark text-hover-primary mb-1 font-size-lg">{{ dialogContent['description'] }}</span>
+                <span class="text-muted">Histórico</span>
+            </div>
+        </div>
+
+        <mat-divider></mat-divider>
+        <br>
+        <h5> TODAS AS PARCELAS </h5>
+        <div class="d-flex align-items-center mb-4">
+            <span class="bullet bullet-bar bg-info align-self-stretch"></span>
+
+
+            <div class="d-flex flex-column flex-grow-1 ml-sm-4">
+                <span class="text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            DATA DE VENCIMENTO
+                        </div>
+                        <div class="col-sm-3">
+                            VALOR
+                        </div>
+                        <div class="col-sm-3">
+                            SITUAÇÃO
+                        </div>
+                    </div>
+
+                </span>
+            </div>
+
+        </div>
+        <div class="d-flex align-items-center mb-4" *ngFor="let bills of dialogContent['bill'].entries">
+            <span class="bullet bullet-bar bg-primary align-self-stretch"></span>
+
+
+            <div class="d-flex flex-column flex-grow-1 ml-sm-4">
+                <span class="text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            {{ bills.due | date:'dd/mm/yyyy'}}
+                        </div>
+                        <div class="col-sm-3">
+                            {{ bills.amount | currency }}
+                        </div>
+                        <div class="col-sm-3">
+                            {{ bills.status }}
+                        </div>
+                    </div>
+
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+</div>

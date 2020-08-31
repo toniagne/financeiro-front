@@ -1,0 +1,22 @@
+<!-- begin:: Header Topbar -->
+<ng-container>
+
+  <ng-container *ngIf="notificationsDisplay">
+    <!--begin: Notifications -->
+      <kt-notification [bgImage]="'./assets/media/misc/bg-1.jpg'" [pulse]="true" [skin]="'dark'" [icon]="'./assets/media/svg/icons/General/Notifications1.svg'" [useSVG]="true"></kt-notification>
+    <!--end: Notifications -->
+  </ng-container>
+
+
+  <ng-container *ngIf="userDisplay">
+    <ng-container *ngIf="userLayout === 'dropdown'">
+      <kt-user-profile [userDropdownStyle]="userDropdownStyle"></kt-user-profile>
+    </ng-container>
+    <ng-container *ngIf="userLayout === 'offcanvas'">
+      <!--begin: User bar -->
+      <kt-user-profile4></kt-user-profile4>
+      <!--end: User bar -->
+    </ng-container>
+  </ng-container>
+</ng-container>
+<!-- end:: Header Topbar -->

@@ -1,0 +1,47 @@
+<kt-portlet>
+    <kt-portlet-header [title]="getComponentTitle()" [class]="'card-head-lg'">
+        <ng-container ktPortletTools>
+            <a [routerLink]="['../']" class="btn btn-secondary mr-2" mat-raised-button matTooltip="Voltar">
+                <i class="la la-arrow-left"></i>
+                <span class="hidden-mobile">Voltar</span>
+            </a>
+
+            <a href="javascript:;" class="btn btn-primary mr-2" color="primary" [ngClass]="{
+            'spinner spinner-right spinner-md spinner-light': loading
+          }" (click)="onSumbit(false)" mat-raised-button matTooltip="Save & Continue">
+                <span class="hidden-mobile">Salvar</span>
+            </a>
+        </ng-container>
+    </kt-portlet-header>
+
+    <kt-portlet-body>
+        <div *ngIf="indicatorSubject | async">
+            <form [formGroup]="formGroup" class="form form-group-seperator-dashed" *ngIf="formGroup">
+
+                <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+                    Preencha corretamente os campos abaixo desscritos.
+                    <p *ngIf="errosForms">
+                        <span *ngFor="let erro of errosForms"> {{erro.name }} </span>
+                    </p>
+                </kt-alert>
+
+                <div class="form-section form-section-first">
+
+                    <div class="form-group row">
+
+                        <div class="col-sm-12 kt-margin-bottom-20-mobile mb-4">
+                            <mat-form-field class="mat-form-field-fluid" appearance="outline">
+                                <mat-label>Nome da recorrência</mat-label>
+                                <input matInput placeholder="Nome do usuário" formControlName="name"/>
+                                <mat-error>Nome é <strong>obrigatório</strong> </mat-error>
+                                <mat-hint align="start">Digite um <strong>nome</strong> para a recorrência</mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+    </kt-portlet-body>
+</kt-portlet>

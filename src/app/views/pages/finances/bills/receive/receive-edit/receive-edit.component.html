@@ -1,0 +1,213 @@
+<kt-portlet>
+    <kt-portlet-header [title]="getComponentTitle()" [class]="'card-head-lg'">
+        <ng-container ktPortletTools>
+
+            <a (click) ="closeDialog()" class="btn btn-secondary mr-2" mat-raised-button matTooltip="Voltar">
+                <i class="la la-arrow-left"></i>
+                <span class="hidden-mobile">Fechar</span>
+            </a>
+
+            <a href="javascript:;" class="btn btn-primary mr-2" color="primary" [ngClass]="{
+            'spinner spinner-right spinner-md spinner-light': loading
+          }" (click)="onSumbit(false)" mat-raised-button matTooltip="Save & Continue">
+                <span class="hidden-mobile">Salvar</span>
+            </a>
+        </ng-container>
+    </kt-portlet-header>
+
+    <kt-portlet-body>
+
+        <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+            Preencha corretamente os campos abaixo desscritos.
+        </kt-alert>
+
+        <form [formGroup]="formGroup" class="form form-group-seperator-dashed">
+
+            <div class="form-section form-section-first">
+
+                <div class="row mb-4">
+                      <div class="col-sm-12 kt-margin-bottom-20-mobile">
+                        <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                            <mat-label> Cliente </mat-label>
+                            <mat-select formControlName="client_id"  placeholder="Cliente" >
+                                <mat-option *ngFor="let col of clients$ | async" [value]="col['id']">
+                                    {{ col['name'] }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-sm-3 kt-margin-bottom-20-mobile">
+                        <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                            <mat-label> Categoria </mat-label>
+                            <mat-select formControlName="payment_category_id"  placeholder="Categoria" >
+                                <mat-option *ngFor="let col of categories$ | async" [value]="col['id']">
+                                    {{ col['name'] }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-3 kt-margin-bottom-20-mobile">
+                        <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                            <mat-label> Serviço </mat-label>
+                            <mat-select formControlName="service_id"  placeholder="Serviço" >
+                                <mat-option *ngFor="let col of services$ | async" [value]="col['id']">
+                                    {{ col['name'] }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-3 kt-margin-bottom-20-mobile">
+                        <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                            <mat-label> Forma de pagamento </mat-label>
+                            <mat-select formControlName="negotiation_type_id"  placeholder="Forma de pagamento" >
+                                <mat-option *ngFor="let col of negotiationTypes$ | async" [value]="col['id']">
+                                    {{ col['name'] }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-3 kt-margin-bottom-20-mobile">
+                        <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                            <mat-label> Valor </mat-label>
+                            <input matInput currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',' }" formControlName="amount"/>
+                            <mat-error>Valor é <strong>obrigatório</strong> </mat-error>
+                            <mat-hint align="start">Digite o <strong>Valor</strong> </mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-sm-12 kt-margin-bottom-20-mobile">
+                        <mat-form-field class="mat-form-field-fluid"  appearance="fill">
+                            <mat-label> Histórico </mat-label>
+                            <textarea formControlName="description" matInput placeholder="Histórico"></textarea>
+                            <mat-error>Histórico é <strong>obrigatório</strong> </mat-error>
+                            <mat-hint align="start">Digite uma  <strong>observação</strong> </mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+
+                    <div class="col-sm-4 kt-margin-bottom-20-mobile">
+                        <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                            <mat-label> Ocorrência </mat-label>
+                            <mat-select formControlName="recurrence_id"  (selectionChange)="getComplement($event.value)" placeholder="Ocorrencias" >
+                                <mat-option *ngFor="let col of recurrences$ | async" [value]="col['id']">
+                                    {{ col['name'] }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- DETALHES (UNICA) -->
+                    <div class="col-sm-8 kt-margin-bottom-20-mobile mb-4" *ngIf="detOnly">
+                            <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                                <mat-label> Vencimento </mat-label>
+                                <input matInput [matDatepicker]="picker" placeholder="Vencimento" formControlName="due">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                                <mat-hint align="start">Escolha uma <strong>data de vencimento</strong> </mat-hint>
+                            </mat-form-field>
+                    </div>
+                    <!-- DETALHES (UNICA) -->
+
+                    <!-- DETALHES (PARCELADO) -->
+                    <div class="col-sm-4 kt-margin-bottom-20-mobile mb-4" *ngIf="detParcel">
+                        <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                            <mat-label>Dia de vencimento</mat-label>
+                            <input type="number" formControlName="day" matInput placeholder="Dia de venciemnto"/>
+                            <mat-error>Dia de venciemnto é <strong>obrigatório</strong> </mat-error>
+                            <mat-hint align="start">Digite um <strong>dia</strong> </mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-4 kt-margin-bottom-20-mobile mb-4" *ngIf="detParcel">
+                        <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                            <mat-label>Parcelas</mat-label>
+                            <input type="number" matInput placeholder="Parcelas" formControlName="parcels"/>
+                            <mat-error>Parcela é <strong>obrigatório</strong> </mat-error>
+                            <mat-hint align="start">Digite uma <strong>parcela</strong> </mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <!-- DETALHES (PARCELADO) -->
+
+                    <!-- DETALHES (MENSAL - BIMESTRAL - SEMESTRAL - TRIMESTRAL) -->
+                        <div class="col-sm-8 kt-margin-bottom-20-mobile mb-4" *ngIf="detMonthly">
+                            <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                                <mat-label>Dia de vencimento</mat-label>
+                                <input type="number" matInput formControlName="day" placeholder="Dia de venciemnto"/>
+                                <mat-error>Dia de venciemnto é <strong>obrigatório</strong> </mat-error>
+                                <mat-hint align="start">Digite um <strong>dia</strong> </mat-hint>
+                            </mat-form-field>
+                        </div>
+                   <!-- DETALHES (MENSAL) -->
+
+                    <!-- DETALHES (ANUAl) -->
+                    <div class="col-sm-8 kt-margin-bottom-20-mobile mb-4" *ngIf="detYarly">
+                        <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                            <mat-label> Vencimento </mat-label>
+                            <input matInput [matDatepicker]="pickerYarly" placeholder="Vencimento" formControlName="yarly_due">
+                            <mat-datepicker-toggle matSuffix [for]="pickerYarly"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerYarly></mat-datepicker>
+                            <mat-hint align="start">Escolha uma <strong>data de vencimento</strong> </mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <!-- DETALHES (MENSAL) -->
+
+                    <!-- DETALHES (SEMANA) -->
+                    <div class="col-sm-8 kt-margin-bottom-20-mobile mb-4" *ngIf="detWeek">
+                        <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                            <mat-label> Dia da semana </mat-label>
+                            <mat-select formControlName="weekly_due" placeholder="Tipo" (selectionChange)="getType($event.value)" >
+                                <mat-option value="su"> DOMINGO </mat-option>
+                                <mat-option value="mo"> SEGUNDA </mat-option>
+                                <mat-option value="tu"> TERÇA </mat-option>
+                                <mat-option value="we"> QUARTA </mat-option>
+                                <mat-option value="th"> QUINTA </mat-option>
+                                <mat-option value="fr"> SEXTA </mat-option>
+                                <mat-option value="sa"> SÁBADO </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <!-- DETALHES (SEMANA) -->
+
+                    <!-- DETALHES (QUINZENAL) -->
+
+                    <!--
+                    <div class="col-sm-4 kt-margin-bottom-20-mobile mb-4">
+                        <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                            <mat-label>1ª Quinzena</mat-label>
+                            <input type="number" min="1" max="15" matInput formControlName="first_bi_weekly_due" placeholder="1ª quinzena"/>
+                            <mat-hint align="start">Digite um <strong>dia</strong> </mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-4 kt-margin-bottom-20-mobile mb-4" *ngIf="biweekly">
+                        <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                            <mat-label>2ª Quinzena</mat-label>
+                            <input type="number" min="16" max="31" matInput formControlName="second_bi_weekly_due" placeholder="2ª quinzena"/>
+                            <mat-hint align="start">Digite um <strong>dia</strong> </mat-hint>
+                        </mat-form-field>
+                    </div>
+                    -->
+
+                    <div class="col-sm-8 kt-margin-bottom-20-mobile mb-4" *ngIf="biweekly">
+                        <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                            <mat-label>Dia de vencimento</mat-label>
+                            <input type="number" formControlName="day" matInput placeholder="Dia de venciemnto"/>
+                            <mat-error>Dia de venciemnto é <strong>obrigatório</strong> </mat-error>
+                            <mat-hint align="start">Digite um <strong>dia</strong> </mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <!-- DETALHES (QUINZENAL) -->
+
+                </div>
+
+            </div>
+            
+        </form>
+
+    </kt-portlet-body>
+</kt-portlet>

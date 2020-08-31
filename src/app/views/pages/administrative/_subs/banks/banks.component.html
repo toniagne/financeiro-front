@@ -1,0 +1,47 @@
+<mat-card [formGroup]="form">
+    <mat-card-header>
+        <h4>Contas
+            <button mat-icon-button (click)="addBank()">
+                <mat-icon aria-label="Example icon-button with a heart icon">queue music</mat-icon>
+            </button>&nbsp;
+        </h4>
+    </mat-card-header>
+
+    <div class="form-section form-section-first" formArrayName="banks">
+
+        <div class="row" *ngFor="let mob of bankForms.controls; let i=index" [formGroup]="bankForms.controls[i]">
+
+            <div class="col-sm-1">
+                <a mat-icon-button (click)="deleteBank(i)">
+                    <mat-icon>clear</mat-icon>
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>Banco {{ i + 1 }}</mat-label>
+                    <input matInput placeholder="Nome" formControlName="bank_name"/>
+                    <mat-hint align="start">Digite o nome do <strong>banco</strong> </mat-hint>
+                </mat-form-field>
+            </div>
+
+            <div class="col-sm-3">
+                <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>Agência </mat-label>
+                    <input matInput placeholder="Agência" formControlName="agency"/>
+                    <mat-hint align="start">Digite a agência com o <strong>dígito</strong> </mat-hint>
+                </mat-form-field>
+            </div>
+
+            <div class="col-sm-3">
+                <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>número da conta </mat-label>
+                    <input matInput placeholder="N° da conta" formControlName="account" />
+                    <mat-hint align="start">Digite apenas  <strong>números</strong> </mat-hint>
+                </mat-form-field>
+            </div>
+
+
+            <div class="col-sm-2"></div>
+        </div>
+    </div>
+</mat-card>

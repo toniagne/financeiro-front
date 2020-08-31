@@ -1,0 +1,105 @@
+<kt-portlet>
+  <kt-portlet-header [title]="'Lista de serviços'" [class]="'card-head-lg'" >
+    <ng-container ktPortletTools>
+      <button [routerLink]="['../servicos/add']" mat-raised-button color="primary" matTooltip="Novo serviço">Novo serviço</button>
+   </ng-container>
+  </kt-portlet-header>
+
+  <kt-portlet-body>
+    <div class="form kt-margin-b-30">
+      <div class="form-filtration">
+        <div class="row align-items-center">
+          <div class="col-md-2 kt-margin-bottom-10-mobile">
+            <mat-form-field class="mat-form-field-fluid">
+              <input matInput (keyup)="applyFilter($event)" placeholder="Pesquisar" #input>
+              <mat-hint align="start">
+                <strong>Pesquisar</strong> em todos os campos
+              </mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- end::FILTERS & GROUP ACTIONS -->
+
+    <!-- MATERIAL TABLE | Binded to datasources -->
+    <!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+    <div class="mat-table__wrapper p-0">
+
+      <mat-table #table [dataSource]="dataSource"  class="lmat-elevation-z8"
+                 matSort matSortActive="created" matSortDisableClear matSortDirection="asc">
+        <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef  mat-sort-header>Nome</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+          <mat-header-cell *matHeaderCellDef>Valor</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.priceParsed}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="service_type">
+          <mat-header-cell *matHeaderCellDef>Intervalo</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.recurrence}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="service_category">
+          <mat-header-cell *matHeaderCellDef>Categoria</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.service_category}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="category">
+          <mat-header-cell *matHeaderCellDef>Observações</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.observation}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.active | active}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+          <mat-cell *matCellDef="let item">
+            <button mat-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu"  >
+              <button mat-menu-item  (click)="view(item)">
+                <mat-icon>remove_red_eye</mat-icon>
+                <span>Visualizar</span>
+              </button>
+              <button mat-menu-item (click)="edit(item)">
+                <mat-icon>create </mat-icon>
+                <span>Editar</span>
+              </button>
+              <button mat-menu-item  (click)="delete(item)">
+                <mat-icon>delete</mat-icon>
+                <span>Apagar</span>
+              </button>
+
+            </mat-menu>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+
+
+    </div>
+
+    <!-- start: BOTTOM -->
+    <div class="mat-table__bottom">
+      <mat-spinner [diameter]="20" *ngIf="isLoadingResults"></mat-spinner>
+      <mat-paginator [length]="resultsLength" [pageSize]="30"> </mat-paginator>
+    </div>
+    <!-- end: BOTTOM -->
+  </kt-portlet-body>
+  <!-- end::Body -->
+</kt-portlet>
+
+

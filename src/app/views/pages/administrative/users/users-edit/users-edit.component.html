@@ -1,0 +1,112 @@
+<kt-portlet>
+  <kt-portlet-header [title]="getComponentTitle()" [class]="'card-head-lg'">
+    <ng-container ktPortletTools>
+      <a [routerLink]="[editing ? '../../' : '../']" class="btn btn-secondary mr-2" mat-raised-button matTooltip="Voltar">
+        <i class="la la-arrow-left"></i>
+        <span class="hidden-mobile">Voltar</span>
+      </a>
+
+      <a href="javascript:;" class="btn btn-primary mr-2" color="primary" [ngClass]="{
+            'spinner spinner-right spinner-md spinner-light': loading
+          }" (click)="onSumbit(false)" mat-raised-button matTooltip="Save & Continue">
+        <span class="hidden-mobile">Salvar</span>
+      </a>
+    </ng-container>
+  </kt-portlet-header>
+
+  <kt-portlet-body>
+  <div *ngIf="indicatorSubject | async">
+    <kt-alert *ngIf="confirmErrors | async" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+      {{ messages | json }}
+    </kt-alert>
+      <mat-tab-group class="demo-tab-group">
+        <mat-tab label="Dados Pessoais">
+          <div class="demo-tab-content">
+            <form [formGroup]="userForm" class="form form-group-seperator-dashed" *ngIf="this.userForm">
+
+              <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+                Preencha corretamente os campos abaixo desscritos.
+              </kt-alert>
+
+
+              <div class="form-section form-section-first">
+                <mat-card>
+                  <mat-card-header>
+                    <h4>Dados pessoais</h4>
+                  </mat-card-header>
+                      <div class="row">
+                        <div class="col-sm-4 kt-margin-bottom-20-mobile">
+                          <mat-form-field class="mat-form-field-fluid" appearance="fill" >
+                            <mat-label>Nome</mat-label>
+                            <input matInput placeholder="Nome do usuário" formControlName="name"/>
+                            <mat-error>Nome é <strong>obrigatório</strong> </mat-error>
+                            <mat-hint align="start">Digite seu   <strong>Nome</strong> </mat-hint>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-sm-4 kt-margin-bottom-20-mobile">
+                          <mat-form-field class="mat-form-field-fluid" appearance="fill" >
+                            <mat-label>CPF</mat-label>
+                            <input matInput placeholder="CPF do usuário" formControlName="cpf" [specialCharacters]="[ '.', '-' ]" mask="000.000.000-00"/>
+                            <mat-error>CPF é <strong>obrigatório</strong> </mat-error>
+                            <mat-hint align="start">Digite o <strong>CPF</strong> </mat-hint>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-sm-4 kt-margin-bottom-20-mobile  mb-4">
+                          <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                            <mat-label>Situação</mat-label>
+                            <mat-select formControlName="blocked"  placeholder="Situação" >
+                              <mat-option *ngFor="let col of status" [value]="col.id">
+                                {{ col.name }}
+                              </mat-option>
+                            </mat-select>
+                            <mat-error>
+                              Situaçao <strong>é um campo obrigatório</strong>
+                            </mat-error>
+                            <mat-hint align="start">Escolha uma <strong>situação</strong>
+                            </mat-hint>
+                          </mat-form-field>
+                        </div>
+
+                      </div>
+
+                      <div class="row">
+                        <div class="col-sm-6 kt-margin-bottom-20-mobile">
+                          <mat-form-field class="mat-form-field-fluid" appearance="fill" >
+                            <mat-label>E-mail</mat-label>
+                            <input matInput type="email" placeholder="E-mail" formControlName="email"/>
+                            <mat-error>E-mail é <strong>obrigatório</strong> </mat-error>
+                            <mat-hint align="start">Digite seu   <strong>e-mail</strong> </mat-hint>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-sm-6 kt-margin-bottom-20-mobile">
+                          <mat-form-field class="mat-form-field-fluid" appearance="fill" >
+                            <mat-label>Senha</mat-label>
+                            <input matInput type="password" placeholder="Senha" formControlName="password"/>
+                            <mat-error>Senha é <strong>obrigatório</strong> </mat-error>
+                            <mat-hint align="start">Digite o <strong>Senha</strong> </mat-hint>
+                          </mat-form-field>
+                        </div>
+
+                      </div>
+                </mat-card>
+                    <kt-phones [phonesSubject]="phonesSubject"></kt-phones>
+
+              </div>
+            </form>
+          </div>
+        </mat-tab>
+        <mat-tab label="Permissões">
+          <div 	class="demo-tab-content">
+            <kt-permissions [permissionsSubject]="permissionsSubject"></kt-permissions>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+  </div>
+
+
+
+  </kt-portlet-body>
+</kt-portlet>

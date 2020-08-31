@@ -1,0 +1,78 @@
+<!--begin::Sticky Toolbar-->
+<ul class="sticky-toolbar nav flex-column pl-2 pr-2 pt-3 pb-3 mt-4">
+	<li class="nav-item mb-2" data-toggle="tooltip" data-placement="left" ngbTooltip="Filtros de pesquisa">
+		<a class="btn btn-sm btn-icon btn-bg-light btn-text-primary btn-hover-primary" id = "kt_filter_receives_toggle"  href="javascript:;">
+      <i class="flaticon-search"></i>
+		</a>
+	</li>
+</ul>
+<!--end::Sticky Toolbar-->
+<div ktOffcanvas [options]="offcanvasOptions" id="kt_quick_panel" class="offcanvas offcanvas-right pt-5 pb-10" [ngStyle]="{'overflow': 'hidden'}">
+
+	<div class="offcanvas-header offcanvas-header-navs d-flex align-items-center justify-content-between mb-5">
+		<div class="card-header">Filtros avançados</div>
+		<div class="offcanvas-close mt-n1 pr-5">
+			<a href="javascript:;" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_filter_receives_close">
+				<i class="ki ki-close icon-xs text-muted"></i>
+			</a>
+		</div>
+	</div>
+
+	<div class="offcanvas-content px-10">
+
+		<form [formGroup]="formGroup" class="form form-group-seperator-dashed">
+			<div class="form-group row">
+
+				<div class="col-sm-12 kt-margin-bottom-20-mobile">
+					<mat-form-field class="mat-form-field-fluid" appearance="outline">
+						<mat-label> Opção </mat-label>
+						<mat-select formControlName="options"  placeholder="Período" >
+							<mat-option *ngFor="let col of options" [value]="col" class="zindex-2">
+								{{ col }}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+
+				<div class="col-sm-12 kt-margin-bottom-20-mobile">
+					<mat-form-field class="mat-form-field-fluid" appearance="outline">
+						<mat-label> Período </mat-label>
+						<mat-select formControlName="period"  placeholder="Período" >
+							<mat-option *ngFor="let col of period" [value]="col.id">
+								{{ col.name }}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+
+				<div class="col-sm-12 kt-margin-bottom-20-mobile">
+					<mat-form-field class="mat-form-field-fluid" appearance="outline">
+						<mat-label> Categoria </mat-label>
+						<mat-select formControlName="category"  placeholder="Categoria" >
+							<mat-option *ngFor="let col of category" [value]="col.id">
+								{{ col.name }}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+
+				<div class="col-sm-12 kt-margin-bottom-20-mobile">
+					<mat-form-field class="mat-form-field-fluid" appearance="outline">
+						<mat-label> Valor </mat-label>
+						<input matInput currencyMask  formControlName="value"/>
+						<mat-error>Valor é <strong>obrigatório</strong> </mat-error>
+						<mat-hint align="start">Digite o <strong>Valor</strong> </mat-hint>
+					</mat-form-field>
+				</div>
+			</div>
+
+			<a href="javascript:;" class="btn btn-primary mr-2" color="primary" [ngClass]="{
+            'spinner spinner-right spinner-md spinner-light': loading
+          }" (click)="onSumbit()" mat-raised-button matTooltip="Save & Continue">
+				<span class="hidden-mobile">Salvar</span>
+			</a>
+		</form>
+	</div>
+
+
+</div>

@@ -1,0 +1,38 @@
+<mat-card [formGroup]="form">
+    <mat-card-header>
+        <h4>Detalhes do produto
+            <button mat-icon-button (click)="addDetails()">
+                <mat-icon aria-label="Example icon-button with a heart icon">queue music</mat-icon>
+            </button>&nbsp;
+        </h4>
+    </mat-card-header>
+
+    <div class="form-section form-section-first" formArrayName="details">
+
+        <div class="row" *ngFor="let mob of detailsForm.controls; let i=index" [formGroup]="detailsForm.controls[i]">
+
+            <div class="col-sm-1">
+                <a mat-icon-button (click)="deleteDetails(i)">
+                    <mat-icon>clear</mat-icon>
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>Detalhe {{ i + 1 }}</mat-label>
+                    <input matInput placeholder="Nome" formControlName="key"/>
+                    <mat-hint align="start">Digite o nome do <strong>detalhe</strong> </mat-hint>
+                </mat-form-field>
+            </div>
+
+            <div class="col-sm-3">
+                <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>Descrição </mat-label>
+                    <input matInput placeholder="Agência" formControlName="value"/>
+                    <mat-hint align="start">Digite uma <strong>descrição</strong> para o detalhe. </mat-hint>
+                </mat-form-field>
+            </div>
+
+            <div class="col-sm-4"></div>
+        </div>
+    </div>
+</mat-card>

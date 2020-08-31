@@ -1,0 +1,89 @@
+<!--begin::Form-->
+<form [formGroup]="addressForm" class="form form-group-seperator-dashed">
+
+<mat-card>
+    <mat-card-header>
+        <h4>Endereço</h4>
+    </mat-card-header>
+    <div class="form-section form-section-first">
+        <mat-progress-bar mode="buffer" *ngIf="loading"></mat-progress-bar>
+
+        <div *ngIf="!loading" class="row">
+            <div class="col-sm-2 kt-margin-bottom-20-mobile">
+                <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>CEP</mat-label>
+                    <input matInput placeholder="Cep" formControlName="zipcode" [specialCharacters]="[ '-' ]" mask="00000-000" (keydown.Tab)="checkZipcode()"/>
+                    <mat-error>CEP é <strong>obrigatório</strong> </mat-error>
+                    <mat-hint align="start">Digite o <strong>CEP</strong> </mat-hint>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-5 kt-margin-bottom-20-mobile">
+                <mat-form-field class="mat-form-field-fluid" appearance="fill" >
+                    <mat-label>Estado</mat-label>
+                    <mat-select formControlName="state"  placeholder="Estado" (selectionChange)="showCities($event.value)">
+                        <mat-option *ngFor="let col of states" [value]="col.id">
+                            {{ col.title }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Estado <strong>é um campo obrigatório</strong>
+                    </mat-error>
+                    <mat-hint align="start">Digite uma <strong>categoria</strong>
+                    </mat-hint>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-5 kt-margin-bottom-20-mobile mb-4" >
+                <mat-form-field class="mat-form-field-fluid" appearance="fill" >
+                    <mat-label>Cidade</mat-label>
+                    <mat-select formControlName="city_id"  placeholder="Cidade" >
+                        <mat-option *ngFor="let col of cities" [value]="col.id">
+                            {{ col.title }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error> Cidade <strong>é um campo obrigatório</strong> </mat-error>
+                    <mat-hint align="start">Digite uma <strong>categoria</strong>
+                    </mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div *ngIf="!loading" class="row" >
+            <div class="col-sm-5 kt-margin-bottom-20-mobile mb-4">
+                <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>Endereço</mat-label>
+                    <input matInput placeholder="Endereço" formControlName="address"/>
+                    <mat-error>Endereço é <strong>obrigatório</strong> </mat-error>
+                    <mat-hint align="start">Digite o <strong>Endereço</strong> </mat-hint>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-2 kt-margin-bottom-20-mobile">
+                <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>Número</mat-label>
+                    <input matInput placeholder="Número" formControlName="number" (blur)="updateAddress()"/>
+                    <mat-error>Número é <strong>obrigatório</strong> </mat-error>
+                    <mat-hint align="start">Digite o <strong>Nùmero</strong> </mat-hint>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-5 kt-margin-bottom-20-mobile">
+                <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>Bairro</mat-label>
+                    <input matInput placeholder="Bairro" formControlName="neighborhood"/>
+                    <mat-error>Bairro é <strong>obrigatório</strong> </mat-error>
+                    <mat-hint align="start">Digite o <strong>Bairro</strong> </mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div *ngIf="!loading" class="row" >
+            <div class="col-sm-12 kt-margin-bottom-20-mobile">
+                <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                    <mat-label>Complemento</mat-label>
+                    <input matInput placeholder="Complemento" formControlName="complement"/>
+                    <mat-hint align="start">Digite o <strong>complemento</strong> </mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+</mat-card>
+</form>
+<!--end::Form-->

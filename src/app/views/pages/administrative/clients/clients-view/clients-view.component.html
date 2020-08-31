@@ -1,0 +1,82 @@
+<kt-portlet>
+    <kt-portlet-header [title]="'Visualizar'" [class]="'card-head-lg'">
+        <ng-container ktPortletTools>
+            <a (click) ="closeDialog()" class="btn btn-secondary mr-2" mat-raised-button matTooltip="Voltar">
+                <i class="la la-arrow-left"></i>
+                <span class="hidden-mobile">Fechar</span>
+            </a>
+        </ng-container>
+    </kt-portlet-header>
+
+    <kt-portlet-body>
+
+
+            <h4>DADOS PESSOAIS</h4>
+        <mat-divider></mat-divider>
+            <div class="row mb-4">
+                <div class="col-sm-4">Nome:</div>
+                <div class="col-sm-8">{{dialogContent['name']}}</div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-4">E-mail:</div>
+                <div class="col-sm-8">{{dialogContent['email']}}</div>
+            </div>
+
+            <div class="row mb-4" *ngIf="dialogContent['fantasy']">
+                <div class="col-sm-4">Nome Fantasia:</div>
+                <div class="col-sm-8">{{dialogContent['fantasy']}}</div>
+            </div>
+
+
+            <div class="row mb-4">
+                <div class="col-sm-4">CPF/CNPJ:</div>
+                <div class="col-sm-8">{{dialogContent['document']}}</div>
+            </div>
+
+            <div class="row mb-4" *ngIf="dialogContent['ie']">
+                <div class="col-sm-4">Inscrição Estadual:</div>
+                <div class="col-sm-8">{{dialogContent['ie']}}</div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-4">Status:</div>
+                <div class="col-sm-8">{{ dialogContent['active'] | active }}</div>
+            </div>
+        <br><br>
+
+
+            <h4>ENDEREÇOS</h4>
+            <div class="row mb-4" *ngIf="dialogContent['address'][0]">
+                <div class="col-sm-4">Endereço:</div>
+                <div class="col-sm-8">
+                    {{ dialogContent['address'][0]['address'] }}, {{ dialogContent['address'][0]['number'] }}
+                </div>
+            </div>
+<br><br>
+        <mat-divider></mat-divider>
+
+
+            <h4>TELEFONES</h4>
+            <div class="row mb-4" *ngFor="let phone of dialogContent['phone']">
+                <div class="col-sm-4">Telefone:</div>
+                <div class="col-sm-8">
+                   {{ phone.phone | telefone }}
+                </div>
+            </div>
+
+<br><Br>
+        <mat-divider></mat-divider>
+            <h4>CONTATOS</h4>
+            <div class="row mb-4" *ngFor="let contact of dialogContent['contacts']">
+                <div class="col-sm-4">Telefone:</div>
+                <div class="col-sm-8">
+                    {{ contact.name }} |
+                    {{ contact.phone | telefone }} |
+                    {{ contact.email }} |
+                </div>
+            </div>
+
+
+    </kt-portlet-body>
+</kt-portlet>

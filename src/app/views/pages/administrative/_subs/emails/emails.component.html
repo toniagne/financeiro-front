@@ -1,0 +1,33 @@
+<h3>Create New Team</h3>
+<div *ngIf="isValidFormSubmitted" class="submitted"> Form submitted successfully. </div>
+<div class="team">
+    <form [formGroup]="teamForm" (ngSubmit)="onFormSubmit()">
+        <div class="all-emp">
+            <div formArrayName="employees">
+                <div *ngFor="let emp of employees.controls; let i = index" [formGroupName]="i" class="employee">
+                    <p>
+                        <b>Employee : {{i + 1}}</b>
+                    </p>
+                    <p>Emp Id :
+                        <input formControlName="id">
+                    </p>
+                    <p>Emp Name :
+                        <input formControlName="contact">
+                    </p>
+                    <p>Emp Name :
+                        <input formControlName="email">
+                    </p>
+                    <p>
+                        <button type="button" (click)="deleteEmployee(1)">Delete</button>
+                    </p>
+                </div>
+            </div>
+            <button type="button" (click)="addEmployee()">Add More Employee</button>
+        </div>
+        <br/>
+        <button>SUBMIT</button>
+        <button type="button" (click)="setEmployeeValues()">SET VALUE</button>
+        <button type="button" (click)="patchEmployeeValues()">PATCH VALUE</button>
+        <button type="button" (click)="resetTeamForm()">RESET</button>
+    </form>
+</div>

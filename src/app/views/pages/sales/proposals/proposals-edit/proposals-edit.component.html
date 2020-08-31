@@ -1,0 +1,127 @@
+<kt-portlet>
+    <kt-portlet-header [title]="getComponentTitle()" [class]="'card-head-lg'">
+        <ng-container ktPortletTools>
+            <a [routerLink]="[editing ? '../../' : '../']" class="btn btn-secondary mr-2" mat-raised-button matTooltip="Voltar">
+                <i class="la la-arrow-left"></i>
+                <span class="hidden-mobile">Voltar</span>
+            </a>
+
+            <a href="javascript:;" class="btn btn-primary mr-2" color="primary" [ngClass]="{
+            'spinner spinner-right spinner-md spinner-light': loading
+          }" (click)="onSumbit(false)" mat-raised-button matTooltip="Save & Continue">
+                <span class="hidden-mobile">Salvar</span>
+            </a>
+        </ng-container>
+    </kt-portlet-header>
+
+    <kt-portlet-body>
+        <div *ngIf="indicatorSubject | async">
+        <form [formGroup]="formGroup" class="form form-group-seperator-dashed" *ngIf="this.formGroup">
+
+            <div class="card-body-progress">
+                <mat-spinner [diameter]="20"></mat-spinner>
+            </div>
+
+            <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+                Preencha corretamente os campos abaixo desscritos.
+            </kt-alert>
+
+            <div class="row mb-4">
+                <div class="col-sm-8 kt-margin-bottom-20-mobile ">
+                    <mat-form-field class="mat-form-field-fluid" appearance="fill" >
+                        <mat-label>Cliente</mat-label>
+                        <mat-select formControlName="client_id"  placeholder="Cliente" >
+                            <mat-option *ngFor="let col of clients" [value]="col.id">
+                                {{ col.name }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Cliente <strong>é um campo obrigatório</strong>
+                        </mat-error>
+                        <mat-hint align="start">Selecione um <strong>Cliente</strong>
+                        </mat-hint>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-sm-4 kt-margin-bottom-20-mobile">
+                    <mat-form-field class="mat-form-field-fluid" appearance="fill" >
+                        <mat-label>Situação</mat-label>
+                        <mat-select formControlName="situation"  placeholder="Situação" >
+                            <mat-option value="created">NOVO</mat-option>
+                            <mat-option value="unsuccessful">VENCIDA</mat-option>
+                            <mat-option value="canceled">CANCELADA</mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Situação <strong>é um campo obrigatório</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-4 kt-margin-bottom-20-mobile">
+                    <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                        <mat-label>Valor</mat-label>
+                        <input matInput currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',' }" formControlName="value"/>
+                        <mat-error>Valor é <strong>obrigatório</strong> </mat-error>
+                        <mat-hint align="start">Digite o <strong>Valor</strong> </mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4 kt-margin-bottom-20-mobile ">
+                    <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                        <mat-label>Categoria</mat-label>
+                        <mat-select formControlName="category_id"  placeholder="Categoria" >
+                            <mat-option *ngFor="let col of categories" [value]="col.id">
+                                {{ col.name }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Categoria <strong>é um campo obrigatório</strong>
+                        </mat-error>
+                        <mat-hint align="start">Escolha uma <strong>categoria</strong>
+                        </mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4 kt-margin-bottom-20-mobile ">
+                    <div>
+                        <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                            <input matInput [matDatepicker]="picker" placeholder="Validade da proposta" formControlName="validity">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error>Validade da proposta <strong>obrigatório</strong> </mat-error>
+                            <mat-hint align="start">Escolha uma <strong>data</strong> </mat-hint>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-sm-12 kt-margin-bottom-20-mobile">
+                    <mat-form-field class="mat-form-field-fluid" appearance="fill">
+                        <mat-label>Observação</mat-label>
+                        <textarea formControlName="observation" matInput placeholder="Observação"></textarea>
+                        <mat-error>Observação é <strong>obrigatório</strong> </mat-error>
+                        <mat-hint align="start">Digite uma  <strong>observação</strong> </mat-hint>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 kt-margin-bottom-20-mobile ">
+                    <mat-progress-bar mode="buffer" *ngIf="loadingFile"></mat-progress-bar>
+                    <mat-form-field class="mat-form-field-fluid" appearance="fill" *ngIf="!loadingFile">
+                        <mat-label>Anexo (PDF)</mat-label>
+                        <ngx-mat-file-input formControlName="attachment" accept=".pdf" (change)="uploadFile()">
+                        </ngx-mat-file-input>
+                        <mat-hint align="start">Anexe uma proposta. <strong>(PDF)</strong> </mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 kt-margin-bottom-20-mobile" *ngIf="editing">
+                    <button (click)="print(model)" class="btn-link">Clique para imprimir o arquivo</button>
+                </div>
+            </div>
+
+        </form>
+        </div>
+    </kt-portlet-body>
+</kt-portlet>

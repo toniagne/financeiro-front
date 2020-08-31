@@ -1,0 +1,51 @@
+<kt-portlet>
+    <kt-portlet-header [title]="'Visualizar Detalhes'" [class]="'card-head-lg'">
+        <ng-container ktPortletTools>
+            <a (click) ="closeDialog()" class="btn btn-secondary mr-2" mat-raised-button matTooltip="Voltar">
+                <i class="la la-arrow-left"></i>
+                <span class="hidden-mobile">Fechar</span>
+            </a>
+        </ng-container>
+    </kt-portlet-header>
+
+    <kt-portlet-body>
+
+        <mat-card>
+            <div class="row mb-4">
+                <div class="col-sm-4">Nome:</div>
+                <div class="col-sm-8">{{dialogContent['name']}}</div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-4">Tipo de Serviço:</div>
+                <div class="col-sm-8">{{dialogContent['service_type']}}</div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-4">Valor:</div>
+                <div class="col-sm-8">{{dialogContent['priceParsed']}}</div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-4">Recorrência:</div>
+                <div class="col-sm-8">{{dialogContent['recurrence']}}</div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-4">Categoria:</div>
+                <div class="col-sm-8">{{dialogContent['service_category']}}</div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-4">Status:</div>
+                <div class="col-sm-8">{{dialogContent['active'] | active}}</div>
+            </div>
+
+
+        </mat-card>
+
+
+
+
+    </kt-portlet-body>
+</kt-portlet>

@@ -1,0 +1,155 @@
+<kt-portlet>
+    <!-- PORTLET LOADING | Binded to TABLE Datasource -->
+    <!-- See prop => '~/core/_crud/models/data-sources/_base.datasource.ts' (loading$) -->
+    <kt-portlet-header [title]="'Contas à receber'" [class]="'card-head-lg'" >
+        <ng-container ktPortletTools>
+            <button (click)="addReceive()" mat-raised-button matTooltip="Create new customer" color="primary"
+                    type="button">
+                <span>Lançar nova conta</span>
+            </button>
+            <button mat-button [matMenuTriggerFor]="actions"><mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #actions="matMenu">
+
+                <button mat-menu-item>
+                    <mat-icon>list_alt</mat-icon>
+                    <span>Gerar remessa</span>
+                </button>
+
+                <button mat-menu-item>
+                    <mat-icon>dynamic_feed</mat-icon>
+                    <span>Gerar boletos/PDF</span>
+                </button>
+
+                <button mat-menu-item>
+                    <mat-icon>print</mat-icon>
+                    <span>Gerar Recibos</span>
+                </button>
+            </mat-menu>
+
+        </ng-container>
+    </kt-portlet-header>
+    <!-- end::Header -->
+
+    <!-- start::Body (attribute: ktPortletBody) -->
+    <kt-portlet-body>
+        <!-- start::FILTERS & GROUP ACTIONS -->
+        <div class="form kt-margin-b-30">
+            <div class="form-filtration">
+                <div class="row align-items-center">
+                    <div class="col-md-2 kt-margin-bottom-10-mobile">
+                        <mat-form-field class="mat-form-field-fluid">
+                            <input matInput placeholder="Search user" #searchInput placeholder="Consultar">
+                            <mat-hint align="start">
+                                <strong>Pesquisar</strong> em todos os campos
+                            </mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- end::FILTERS & GROUP ACTIONS -->
+
+        <!-- MATERIAL TABLE | Binded to datasources -->
+        <!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+        <div class="mat-table__wrapper p-0">
+
+            <mat-table #table [dataSource]="dataSource"  class="lmat-elevation-z8"
+                       matSort matSortActive="created" matSortDisableClear matSortDirection="asc">
+                <!--- Note that these columns can be defined in any order.
+                The actual rendered columns are set as a property on the row definition" -->
+
+                <ng-container matColumnDef="client">
+                    <mat-header-cell *matHeaderCellDef>Cliente</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.bill.client}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="history">
+                    <mat-header-cell *matHeaderCellDef>Histórico</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.description}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="due">
+                    <mat-header-cell *matHeaderCellDef>Data Vencimento</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.due}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="amount">
+                    <mat-header-cell *matHeaderCellDef>Valor</mat-header-cell>
+                    <mat-cell *matCellDef="let row" [style]="'text-align:right;'">{{row.amount | currency}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef>Situação</mat-header-cell>
+                    <mat-cell *matCellDef="let row" align="right">{{row.status}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+                    <mat-cell *matCellDef="let item" align="right">
+                        <button mat-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+
+                            <button mat-menu-item (click)="billCheck(item)">
+                                <mat-icon>done</mat-icon>
+                                <span>Baixar</span>
+                            </button>
+                            <button mat-menu-item (click)="billCancel(item)">
+                                <mat-icon>block</mat-icon>
+                                <span>Cancelar</span>
+                            </button>
+
+                            <mat-divider></mat-divider>
+
+                            <button mat-menu-item (click)="billView(item)">
+                                <mat-icon>remove_red_eye</mat-icon>
+                                <span>Visualizar</span>
+                            </button>
+
+                            <mat-divider></mat-divider>
+
+                            <button mat-menu-item >
+                                <mat-icon>payments</mat-icon>
+                                <span>Emitir boleto</span>
+                            </button>
+                            <button mat-menu-item >
+                                <mat-icon>send</mat-icon>
+                                <span>Enviar boleto</span>
+                            </button>
+                            <button mat-menu-item>
+                                <mat-icon>clear</mat-icon>
+                                <span>Excluir</span>
+                            </button>
+
+                            <mat-divider></mat-divider>
+
+                            <button mat-menu-item>
+                                <mat-icon>assignment_turned_in</mat-icon>
+                                <span>Gerar nfe</span>
+                            </button>
+                        </mat-menu>
+
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+
+
+        </div>
+
+        <!-- start: BOTTOM -->
+        <div class="mat-table__bottom">
+            <mat-spinner [diameter]="20" *ngIf="isLoadingResults"></mat-spinner>
+            <mat-paginator [length]="resultsLength" [pageSize]="30"> </mat-paginator>
+        </div>
+        <!-- end: BOTTOM -->
+    </kt-portlet-body>
+    <!-- end::Body -->
+</kt-portlet>
+
+
+<kt-sticky-toolbar></kt-sticky-toolbar>
